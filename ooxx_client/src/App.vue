@@ -1,17 +1,23 @@
 <template>
   <div id="app">
     <!--<Login/>-->
-    <Register/>
+    <!--<Register/>-->
+    <!--<Info/>-->
+    <!--<router-link to="/register">Register</router-link>-->
+    <!--<router-link to="/login">Login</router-link>-->
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-  import Login from './containers/login/Login'
-  import Register from './containers/register/Register'
+  import Login from './views/login/Login'
+  import Register from './views/register/Register'
+  import Info from './views/info/Info'
 export default {
     components: {
       Login,
-      Register
+      Register,
+      Info
     },
   name: 'App'
 }

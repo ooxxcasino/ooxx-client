@@ -1,11 +1,12 @@
 <template>
   <div>
-    <mt-header fixed title="OOXX教育"></mt-header>
+    <mt-header fixed title="在线性教育"></mt-header>
     <Logo/>
     <mt-field label="账号" placeholder="请输入账号"></mt-field>
     <mt-field label="密码" placeholder="请输入密码" type="password"></mt-field>
-    <mt-button @click.native="handleClick" type="primary">登录</mt-button>
-    <mt-button type="primary">还未有账号</mt-button>
+    <mt-field label="确认密码" placeholder="请再次输入密码" type="password"></mt-field>
+    <mt-button @click.native="handleClick" type="primary">立即注册</mt-button>
+    <mt-button type="primary" @click.native="toLogin">已有账号</mt-button>
   </div>
 </template>
 
@@ -19,14 +20,17 @@
     methods: {
       handleClick() {
         Toast('登录')
+      },
+      toLogin() {
+        this.$router.replace('/login')
       }
     }
   }
 </script>
 
 <style>
- .mint-button{
-   width: 100%;
-   margin: 10px 0;
- }
+  .mint-button{
+    width: 100%;
+    margin: 10px 0;
+  }
 </style>
