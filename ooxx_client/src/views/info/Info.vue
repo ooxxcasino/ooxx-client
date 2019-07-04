@@ -1,9 +1,9 @@
 <template>
   <div>
     <mt-header fixed title="个人信息完善"></mt-header>
-    <mt-cell style="margin-top: 40px;" title="dd">
+    <mt-cell @click.native="headerClick" style="margin-top: 40px;" title="dd">
       <span>我的头像</span>
-      <img slot="icon" src="../../assets/img/头像1.png" width="48" height="48" alt="">
+      <img slot="icon" :src="'../../assets/img/头像'+ header +'.png'" width="48" height="48" alt="">
     </mt-cell>
     <mt-field label="用户名" v-model="name" :state="nameState" placeholder="请输入您的用户名"></mt-field>
     <mt-radio
@@ -21,11 +21,11 @@
     </mt-field>
     <mt-popup
       v-model="isShow"
-      position="bottom"
+      position="right"
       message="请选择学历"
     >
       <mt-radio
-          title="性别"
+          title="学历"
           v-model="education"
           :options="educations">
       </mt-radio>
@@ -45,7 +45,7 @@
   export default {
     data() {
       return {
-        header: '',
+        header: 1,
         name: '',
         tel: null,
         email: '',
@@ -53,9 +53,9 @@
         label: '',
         education: '无',
         isShow: false,
-        educations: [{label: '无', value: '无'}, {label: '小学', value: '小学'}, {label: '初中', value: '初中'},
-          {label: '高中', value: '高中'},{label: '大专', value: '大专'},{label: '本科', value: '本科'},
-          {label: '研究生', value: '研究生'},{label: '博士', value: '博士'},],
+        educations: [{label: '无', value: '无'}, {label: '小学', value: '小学'}, {label: '中学', value: '中学'},
+          {label: '大专', value: '大专'},{label: '本科', value: '本科'},
+          {label: '研究生及以上', value: '研究生及以上'}],
         gender: 'female',
         sexOptions: [{label: '男', value: 'male'}, {label: '女', value: 'female'}],
         type: [],
@@ -107,6 +107,9 @@
     methods: {
       educationClick() {
         this.isShow = true;
+      },
+      headerClick() {
+
       }
     }
   }

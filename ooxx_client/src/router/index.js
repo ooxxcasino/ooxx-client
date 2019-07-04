@@ -5,6 +5,10 @@ import Register from '../views/register/Register'
 import Info from '../views/info/Info'
 import Home from '../views/home/Home'
 import Main from '../views/main/Main'
+import Lesson from '../views/lesson/Lesson'
+import Article from '../views/article/Article'
+import Mine from '../views/mine/Mine'
+import Video from '../views/video/Video'
 
 Vue.use(VueRouter);
 
@@ -16,22 +20,18 @@ export default new VueRouter({
     },
     {
       path: '/login',
-      name: 'login',
       component: Login
     },
     {
       path: '/register',
-      name: 'register',
       component: Register
     },
     {
       path: '/info',
-      name: 'info',
       component: Info
     },
     {
       path: '/home',
-      name: 'home',
       component: Home,
       children: [
         {
@@ -41,10 +41,25 @@ export default new VueRouter({
         {
           // path: '/main', //  path 最左侧的 / 永远代表根路径，不对
           path: '/home/main',
-          name: 'main',
           component: Main
+        },
+        {
+          path: '/home/lesson',
+          component: Lesson
+        },
+        {
+          path: '/home/article',
+          component: Article
+        },
+        {
+          path: '/home/mine',
+          component: Mine
         }
       ]
+    },
+    {
+      path: '/video/:id',
+      component: Video
     }
   ]
 })
