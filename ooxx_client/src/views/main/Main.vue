@@ -1,6 +1,5 @@
 <template>
   <div>
-
       <mt-cell-swipe
           v-for="(item, index) in list"
           :label="item.price.toString()"
@@ -9,7 +8,7 @@
           :key="index"
           is-link
           :to="'/video/' + item.id"
-          icon="123"
+          @click.native="handleClick(item.id)"
       >
         <img slot="icon" src="../../assets/img/nav.png" width="48" height="48" alt="">
       </mt-cell-swipe>
@@ -237,6 +236,9 @@
       }
     },
     methods:{
+      handleClick(id) {
+        this.$router.push(`/video/${id}`)
+      }
       // loadMore() {
       //   this.loading = true;
       //   setTimeout(() => {
@@ -248,15 +250,19 @@
       //   }, 2500);
       // }
     },
-    // mounted() {
-    //     const url = '/main';
-    //     axios.get(url).then(
-    //       resposnse => {
-    //         const result = resposnse.data;
-    //         this.list = result;
-    //       }
-    //     )
-    // }
+    mounted() {
+        const url = 'http://localhost:8080/video/list';
+        axios.get(url).then(
+          response => {
+            const result = response.data;
+            if (response.code === 1) {
+              this.list = result;
+            } else {
+              console.log(result.info)
+            }
+          }
+        )
+    }
   }
 </script>
 

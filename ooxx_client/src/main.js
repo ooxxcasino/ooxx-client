@@ -3,13 +3,20 @@
 import Vue from 'vue'
 import MinUI from 'mint-ui'
 import 'mint-ui/lib/style.css'
-import {XButton} from 'vux'
+// import {XButton} from 'vux'
+import {
+  Rate,
+  Collapse,
+  CollapseItem
+} from 'element-ui'
 import App from './App'
 import router from './router'
 
 Vue.use(MinUI);
-Vue.component('x-button', XButton)
-
+// Vue.component('x-button', XButton)
+Vue.component(Rate.name, Rate);
+Vue.component(Collapse.name, Collapse);
+Vue.component(CollapseItem.name, CollapseItem);
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

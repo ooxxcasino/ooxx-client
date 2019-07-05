@@ -33,15 +33,15 @@
         const url = `http://localhost:8080/user/login`;
         axios.post(url, {account, pwd}).then(
           response => {
-            const result = response.status;
-            if (result === 'success') {
-              this.$router.replace('/info');
+            const result = response.data;
+            if (response.code === 1) {
+              this.$router.replace('/home');
             }else {
-              Toast('账号密码错误');
+              Toast(result.info);
             }
           }
         ).catch(error => {
-          Toast('登录失败')
+          Toast('网络异常')
         });
       },
       toRegister() {

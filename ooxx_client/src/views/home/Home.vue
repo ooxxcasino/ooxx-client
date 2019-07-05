@@ -1,6 +1,6 @@
 <template>
   <div>
-    <mt-cell style="position: fixed;top: 0; z-index: 1;">
+    <mt-cell v-if="!isMine" style="position: fixed;top: 0; z-index: 1;">
       <img slot="icon" src="../../assets/img/头像1.png" height="36" width="36" alt="">
       <mt-search
           style="height: 52px; width: 80%;"
@@ -48,6 +48,7 @@
     data() {
       return {
         searchValue: '',
+        isMine: false,
         navValue: 'main',
         types: [],
         isShow: false,
@@ -63,6 +64,7 @@
     watch: {
       navValue: function (value) {
         this.$router.replace(`/home/${value}`);
+        this.isMine = value === 'mine';
       }
     }
   }
