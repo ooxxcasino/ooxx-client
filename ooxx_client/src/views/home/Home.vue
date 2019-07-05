@@ -8,7 +8,8 @@
           cancel-text="算了"
           placeholder="输入搜索"
       ></mt-search>
-      <mt-button @click.native="typeClick" type="primary">分类</mt-button>
+      <mt-button @click.native="typeClick" v-if="isMain" type="primary">分类</mt-button>
+      <mt-button @click.native="typeClick" v-if="isArticle" type="primary">提问</mt-button>
     </mt-cell>
     <mt-popup
         v-model="isShow"
@@ -50,6 +51,8 @@
         searchValue: '',
         isMine: false,
         navValue: 'main',
+        isMain: false,
+        isArticle:false,
         types: [],
         isShow: false,
         allTypes: [{label: '前端', value: '无'}, {label: '前端', value: '小学'}, {label: '前端', value: '初中'},
@@ -65,6 +68,8 @@
       navValue: function (value) {
         this.$router.replace(`/home/${value}`);
         this.isMine = value === 'mine';
+        this.isMain = value === 'main';
+        this.isArticle = value === 'article';
       }
     }
   }

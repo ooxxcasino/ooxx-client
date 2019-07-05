@@ -34,10 +34,10 @@
         axios.post(url, {account, pwd}).then(
           response => {
             const result = response.data;
-            if (response.code === 1) {
+            if (result.code === 1) {
               this.$router.replace('/home');
             }else {
-              Toast(result.info);
+              Toast(result.data.info);
             }
           }
         ).catch(error => {

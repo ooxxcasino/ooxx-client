@@ -45,15 +45,15 @@
         const url = `http://localhost:8080/video/star`;
         const id = this.$route.params.id;
         const star = this.starValue;
-        // axios.get(url, {id, star}).then(
-        //   response => {
+        axios.get(url, {id, star}).then(
+          response => {
             const result = response.data;
-            this.starValue = result.star;
+            this.starValue = result.data.star;
             this.isChecked = true;
-          // }
-        // ).catch(error => {
-        //   console.log('网络异常');
-        // })
+          }
+        ).catch(error => {
+          console.log('网络异常');
+        })
       }
     },
     mounted() {
@@ -108,9 +108,8 @@
       //   }
       // }
           const result = response.data;
-          this.videoUrl = result.url;
-
-          const allComments = result.comments;
+          this.videoUrl = result.data.url;
+          const allComments = result.data.comments;
       // console.log(allComments);
           this.vComments = allComments.filter(comment => comment.toComment==='');
           // console.log(this.vComments);
