@@ -1,9 +1,14 @@
 <template>
   <div>
-    <mt-header fixed title="个人信息完善"></mt-header>
+    <mt-header fixed title="个人信息完善">
+      <router-link to="/home/mine" slot="left">
+        <mt-button icon="back">返回</mt-button>
+      </router-link>
+      <mt-button icon="more" slot="right"></mt-button>
+    </mt-header>
     <mt-cell @click.native="headerClick" style="margin-top: 40px;" title="dd">
       <span>我的头像</span>
-      <img slot="icon" :src="'../../assets/img/头像'+ header +'.png'" width="48" height="48" alt="">
+      <img slot="icon" width="48" height="48" alt="">
     </mt-cell>
     <mt-field label="用户名" v-model="name" :state="nameState" placeholder="请输入您的用户名"></mt-field>
     <mt-radio
@@ -17,7 +22,7 @@
     <!--<mt-cell :title="age"><span>我的年龄</span></mt-cell>-->
     <mt-field type="number" label="年龄" placeholder="请设置您的生日" :value="age" disabled></mt-field>
     <mt-field label="学历" v-model="education" disabled id="disable">
-      <mt-button @click="educationClick">选择学历</mt-button>
+      <mt-button @click="educationClick">学历</mt-button>
     </mt-field>
     <mt-popup
       v-model="isShow"
@@ -37,15 +42,28 @@
         v-model="type"
         :options="options">
     </mt-checklist>
-    <mt-button type="primary">立即注册</mt-button>
+    <mt-button id="btn" @click="dialogVisible = true" type="primary">立即修改</mt-button>
+    <el-dialog
+        title="提示"
+        :visible.sync="dialogVisible"
+        width="60%">
+      <span>确定修改信息吗？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="handleClick">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
+  import axios from 'axios'
+  import Cookies from 'js-cookie'
   export default {
     data() {
       return {
-        header: 1,
+        dialogVisible:false,
+        header: '',
         name: '',
         tel: null,
         email: '',
@@ -105,11 +123,24 @@
       }
     },
     methods: {
+      goBack() {
+        this.$router.go(-1);
+      },
       educationClick() {
         this.isShow = true;
       },
-      headerClick() {
-
+      handleClick() {
+        const account = Cookies.get('account');
+        const {header, name, gender, tel, email, birthday, age, education, type} = this;
+        const url = `http://localhost:8080/user/update`;
+        axios.post(url , {account, header, name, gender, tel, email, birthday, age, education, type}).then(
+          response => {
+            console.log("成功啦");
+            this.$router.replace('/home/mine')
+          }
+        ).catch(error => {
+          console.log("出错啦");
+        })
       }
     }
   }
@@ -119,7 +150,7 @@
   .mint-field{
     margin: 5px 0;
   }
-   .mint-button--primary{
+   #btn{
      width: 100%;
      margin: 10px 0;
    }

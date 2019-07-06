@@ -1,8 +1,16 @@
 <template>
   <div>
     <div v-for="item in list" :key="item.id">
-      <span>{{item.name}}</span> --- <span>{{item.fromUserName}}</span> --- <span>{{item.time}}</span>
-      <el-divider></el-divider>
+      <el-card class="box-card">
+        <div slot="header" class="clearfix">
+          <span>{{item.name}}</span>
+          <span style="float: right; padding: 3px 0">{{item.fromUserName}}</span>
+        </div>
+        <div class="text item">
+          {{item.info}}<br>
+          {{item.time.substr(0,10)}}
+        </div>
+      </el-card>
     </div>
   </div>
 </template>
@@ -33,5 +41,24 @@
 </script>
 
 <style>
+  .text {
+    font-size: 14px;
+  }
 
+  .item {
+    margin-bottom: 18px;
+  }
+
+  .clearfix:before,
+  .clearfix:after {
+    display: table;
+    content: "";
+  }
+  .clearfix:after {
+    clear: both
+  }
+
+  .box-card {
+    width: 480px;
+  }
 </style>

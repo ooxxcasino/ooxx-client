@@ -37,7 +37,8 @@
       const userUrl = `http://localhost:8080/user/video?account=${account}`;
       axios.get(userUrl).then(
         response => {
-          this.list = response.data;
+          const result = response.data;
+          this.list = result.data;
         }
       ).catch(error => {
         console.log("出错啦");

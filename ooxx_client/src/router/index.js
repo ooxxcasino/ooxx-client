@@ -11,6 +11,7 @@ import Article from '../views/article/Article'
 import Mine from '../views/mine/Mine'
 import Video from '../views/video/Video'
 import Question from '../views/question/Question'
+import myPage from '../views/mine/myPage'
 
 Vue.use(VueRouter);
 
@@ -70,6 +71,10 @@ export default new VueRouter({
     {
       path: '/article/:id',
       component: Article
+    },
+    {
+      path: '/mypage',
+      component: myPage
     }
   ]
 })

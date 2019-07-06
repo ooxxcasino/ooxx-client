@@ -5,7 +5,7 @@
         <el-page-header @back="goBack" content="个人中心" ></el-page-header></el-header>
       <el-main>
         <el-row :gutter="3">
-          <el-col :span="5"> <router-link to="info"> <el-avatar icon="el-icon-user-solid"> </el-avatar></router-link></el-col>
+          <el-col :span="5"> <router-link to="/info"> <el-avatar icon="el-icon-user-solid"> </el-avatar></router-link></el-col>
           <el-col :span="7"><p>{{name}}</p></el-col>
           <el-col :span="3"><p>余额</p></el-col>
           <el-col :span="3"><p>{{money}}</p></el-col>
@@ -17,7 +17,6 @@
           <el-carousel-item v-for="myVideos in cdata" :key="myVideos.id"
                             is-link
                             :to="'/video/' + myVideos.id"
-                            @click.native="play(myVideos.id)"
           >
 
             <img :src="myVideos.imageUrl" width="130" height="130">
@@ -29,17 +28,22 @@
           <el-carousel-item v-for="myHistory in hdata" :key="myHistory.id"
                             is-link
                             :to="'/video/' + myHistory.id"
-                            @click.native="play(myHistory.id)"
           >
-            <!-- <el-button
-                 :to="'/video/' + myHistory.id"
-                @click.native="play(myHistory.id)"> -->
             <img :src="myHistory.imageUrl" width="130" height="130" >
-            <!-- </el-button> -->
           </el-carousel-item>
         </el-carousel>
       </el-main>
-      <el-footer> <el-button type="primary">退出登陆</el-button></el-footer>
+      <el-footer> <el-button @click="dialogVisible = true" type="danger">退出登陆</el-button></el-footer>
+      <el-dialog
+          title="提示"
+          :visible.sync="dialogVisible"
+          width="60%">
+        <span>确定退出登录吗？</span>
+        <span slot="footer" class="dialog-footer">
+    <el-button @click="dialogVisible = false">取 消</el-button>
+    <el-button type="primary" @click="exit">确 定</el-button>
+  </span>
+      </el-dialog>
     </el-container>
   </div>
 </template>
@@ -54,6 +58,7 @@
         money:null,
         cdata:null,
         hdata:null,
+        dialogVisible: false
       }
     },
     methods: {
@@ -63,8 +68,9 @@
       getmoney(){
         this.$router.push(`/mypage`);
       },
-      play(id){
-        this.$router.push(`/video/${id}`);
+      exit() {
+        Cookies.remove('account');
+        this.$router.replace('/login');
       }
     },
     mounted () {

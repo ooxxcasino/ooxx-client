@@ -4,8 +4,11 @@
       <video :src="videoUrl" width="100%" height="260px" controls="controls">
         视频出现错误，请重试
       </video>
-
+      {{videoName}} <el-button @click="addLesson">{{isAdd ? "已添加" : "添加课程"}}</el-button>
+      <br>
+      {{videoInfo}}
     </div>
+    <el-divider></el-divider>
     <div class="block" style="margin-top: 50px;">
       <el-rate
           v-model="starValue"
@@ -17,22 +20,11 @@
       </el-rate>
     </div>
     <!--<x-button type="primary" text="asdas">lala</x-button>-->
-    <el-collapse v-model="activeNames" v-for="item in vComments"  :key="item.id">
+    <el-collapse style="margin-bottom: 45px;" v-model="activeNames" v-for="item in vComments"  :key="item.id">
         <el-collapse-item :title="item.content" >
           <div v-for="comment in toComments" :key="comment.id" v-if="comment.toComment===item.id">{{comment.content}}</div>
-          <el-button @click="">回复</el-button>
-          <el-button type="text" @click="dialogVisible = true">回复</el-button>
-          <el-dialog
-              title="提示"
-              :visible.sync="dialogVisible"
-              width="30%"
-              :before-close="handleClose">
-            <el-input v-model="toSomeone" placeholder="请输入回复内容"></el-input>
-            <span slot="footer" class="dialog-footer">
-              <el-button @click="dialogVisible = false">取 消</el-button>
-              <el-button type="primary" @click="addComment(item.id, item.user_name)">确 定</el-button>
-            </span>
-          </el-dialog>
+          <el-input style="width: 75%;" v-model="toVideo" placeholder="请输入回复内容"></el-input>
+          <el-button @click="addComment(item.id)">回复</el-button>
         </el-collapse-item>
     </el-collapse>
     <div style="position: absolute; bottom: 0; width: 100%;">
@@ -60,16 +52,37 @@
         dialogVisible: false,
         toSomeone: '',
         toVideo: '',
-        videoName: ''
+        videoName: '',
+        videoInfo: '',
+        isAdd: false
       }
     },
     methods: {
-      handleClose(done) {
-        this.$confirm('确认关闭？')
-          .then(_ => {
-            done();
+      addLesson() {
+        const userAccount = Cookies.get('account');
+        const videoId = this.$route.params.id;
+        const url = `http://localhost:8080/user/video`;
+        if (!this.isAdd) {
+          axios.post(url, {userAccount, videoId}).then(
+            response => {
+              const result = response.data;
+              if (result.code === 1) {
+                this.isAdd = true;
+              }
+            }
+          ).catch(error => {
+            console.log("出错啦");
           })
-          .catch(_ => {});
+        }else {
+          axios.delete(url, {userAccount, videoId}).then(
+            response => {
+              this.isAdd = false;
+            }
+          ).catch(error => {
+            console.log("出错啦");
+          })
+        }
+
       },
       getStar() {
         const url = `http://localhost:8080/video/star`;
@@ -85,15 +98,17 @@
           console.log('网络异常');
         })
       },
-      addComment(toComment, toName) {
+      addComment(commentId) {
         const url = 'http://loaclhost:8080/video/addComment';
         const content = this.toSomeone.trim();
-        const userAccount = Cookies.get('account');
+        const toUserAccount = Cookies.get('account');
         const videoId = this.$route.params.id;
-        axios.post(url, {toComment, videoId, toName, userAccount, content}).then(
+        axios.post(url, {commentId, videoId,toUserAccount, content}).then(
           response => {
             this.dialogVisible = false;
             const result = response.data;
+            let i = parseInt(math.random() * 10);
+            this.toComments.push({id: i, content: this.toSomeone, toCommentId: toCommentId});
           }
         ).catch(error => {
           console.log('出错啦');
@@ -107,6 +122,9 @@
         axios.post(url, {videoId, userAccount, content}).then(
           response => {
             const result = response.data;
+            // let i = parseInt(math.random() * 10);
+            // this.vComments.push({id: i, content: this.toVideo, ...});
+            this.toVideo = '';
           }
         ).catch(error => {
           console.log('出错啦');
@@ -116,16 +134,31 @@
     mounted() {
       const id = this.$route.params.id;
       const url = `http://localhost:8080/video/${id}`;
+      const account = Cookies.get('account');
+      const userUrl = `http://localhost:8080/user/video?account=${account}`;
+      axios.get(userUrl).then(
+        response => {
+          const result = response.data;
+          const videoList = result.data;
+          const video = videoList.find(value => value.id===id);
+          if (video) {
+            this.isAdd = true;
+          }
+        }
+      ).catch(error => {
+        console.log("出错啦");
+      });
       axios.get(url).then(
         response => {
           const result = response.data;
           this.videoUrl = result.data.url;
-          const allComments = result.data.comments;
+          const allComments = result.data.videoComments;
           this.videoName = result.data.name;
+          this.videoInfo = result.data.info.substr(0,30) + '...';
       // console.log(allComments);
-          this.vComments = allComments.filter(comment => comment.toComment==='');
+          this.vComments = allComments.filter(comment => comment.toCommentId===null);
           // console.log(this.vComments);
-          this.toComments = allComments.filter(comment => comment.toComment!=='');
+          this.toComments = allComments.filter(comment => comment.toCommentId!==null);
       // console.log(this.toComments);
 
         }

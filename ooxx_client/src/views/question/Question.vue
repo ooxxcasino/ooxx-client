@@ -45,21 +45,20 @@
     },
     methods: {
       onSubmit() {
-        this.$router.replace('/home/articles')
-        // const url = 'http://localhost:8080/question';
-        // const {title, anonymity, type, pay, info} = this;
-        // const time = Date.now();
-        // axios.post(url, {title, anonymity, type, pay, info, time}).then(
-        //   response => {
-        //     const result = response.data;
-        //     if (result.code === 1) {
-        //       setTimeout(function () {
-        //         Toast('创建成功');
-        //         this.$router.replace('/home/articles')
-        //       })
-        //     }
-        //   }
-        // )
+        const url = 'http://localhost:8080/question';
+        const {title, anonymity, type, pay, info} = this;
+        const time = Date.now();
+        axios.post(url, {title, anonymity, type, pay, info, time}).then(
+          response => {
+            const result = response.data;
+            if (result.code === 1) {
+              setTimeout(() => {
+                console.log('创建成功');
+                this.$router.replace('/home/articles')
+              }, 1000)
+            }
+          }
+        )
       },
       onCancel() {
         this.$router.replace('/home/articles')
