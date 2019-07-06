@@ -28,20 +28,21 @@
               :before-close="handleClose">
             <el-input v-model="toSomeone" placeholder="请输入回复内容"></el-input>
             <span slot="footer" class="dialog-footer">
-    <el-button @click="dialogVisible = false">取 消</el-button>
-    <el-button type="primary" @click="addComment(item.id, item.user_name)">确 定</el-button>
-  </span>
+              <el-button @click="dialogVisible = false">取 消</el-button>
+              <el-button type="primary" @click="addComment(item.id, item.user_name)">确 定</el-button>
+            </span>
           </el-dialog>
         </el-collapse-item>
     </el-collapse>
     <div style="position: absolute; bottom: 0; width: 100%;">
       <el-input style="width: 75%;" v-model="toVideo" placeholder="请输入回复内容"></el-input>
-      <el-button>回复</el-button>
+      <el-button @click="addVideoComment">回复</el-button>
     </div>
   </div>
 </template>
 
 <script>
+  import Cookies from 'js-cookie'
   import axios from 'axios'
   import XButton from "vux/src/components/x-button/index";
   export default {
@@ -82,16 +83,32 @@
           console.log('网络异常');
         })
       },
-      addComment(id, toName) {
+      addComment(toComment, toName) {
         const url = 'http://loaclhost:8080/video/addComment';
-        const content = this.myComment.trim();
-        axios.post(url, {id, toName, content}).then(
+        const content = this.toSomeone.trim();
+        const userAccount = Cookies.get('account');
+        const videoId = this.$route.params.id;
+        axios.post(url, {toComment, videoId, toName, userAccount, content}).then(
           response => {
             this.dialogVisible = false;
             const result = response.data;
-
           }
-        )
+        ).catch(error => {
+          console.log('出错啦');
+        })
+      },
+      addVideoComment() {
+        const url = 'http://loaclhost:8080/video/addComment';
+        const content = this.toVideo.trim();
+        const userAccount = Cookies.get('account');
+        const videoId = this.$route.params.id;
+        axios.post(url, {videoId, userAccount, content}).then(
+          response => {
+            const result = response.data;
+          }
+        ).catch(error => {
+          console.log('出错啦');
+        })
       }
     },
     mounted() {
