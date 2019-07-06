@@ -11,15 +11,15 @@
     </el-card>
     <el-divider></el-divider>
     <el-collapse style="margin-bottom: 45px;" v-model="activeNames" v-for="item in vComments"  :key="item.id">
-      <el-collapse-item :title="item.info" >
-        <div v-for="comment in toComments" :key="comment.id" v-if="comment.toAnswerId===item.id">{{comment.info}}</div>
+      <el-collapse-item :title="item.user_name + '回答说：' + item.info" >
+        <div v-for="comment in toComments" :key="comment.id" v-if="comment.toAnswerId===item.id">{{comment.user_name}}回复说：{{comment.info}}</div>
         <el-input style="width: 75%;" v-model="toVideo" placeholder="请输入回复内容"></el-input>
         <el-button @click="addComment(item.id)">回复</el-button>
       </el-collapse-item>
     </el-collapse>
     <div style="position: absolute; bottom: 0; width: 100%;">
-      <el-input style="width: 75%;" v-model="toVideo" placeholder="请输入回复内容"></el-input>
-      <el-button @click="addVideoComment">回复</el-button>
+      <el-input style="width: 75%;" v-model="toVideo" placeholder="请输入回答内容"></el-input>
+      <el-button @click="addVideoComment">回答</el-button>
     </div>
   </div>
 </template>

@@ -21,15 +21,15 @@
     </div>
     <!--<x-button type="primary" text="asdas">lala</x-button>-->
     <el-collapse style="margin-bottom: 45px;" v-model="activeNames" v-for="item in vComments"  :key="item.id">
-        <el-collapse-item :title="item.content" >
-          <div v-for="comment in toComments" :key="comment.id" v-if="comment.toComment===item.id">{{comment.content}}</div>
+        <el-collapse-item :title="item.user_name + '评论说：' + item.content" >
+          <div v-for="comment in toComments" :key="comment.id" v-if="comment.toComment===item.id">{{comment.user_name}}回复说：{{comment.content}}</div>
           <el-input style="width: 75%;" v-model="toVideo" placeholder="请输入回复内容"></el-input>
           <el-button @click="addComment(item.id)">回复</el-button>
         </el-collapse-item>
     </el-collapse>
     <div style="position: absolute; bottom: 0; width: 100%;">
-      <el-input style="width: 75%;" v-model="toVideo" placeholder="请输入回复内容"></el-input>
-      <el-button @click="addVideoComment">回复</el-button>
+      <el-input style="width: 75%;" v-model="toVideo" placeholder="请输入评论内容"></el-input>
+      <el-button @click="addVideoComment">评论</el-button>
     </div>
   </div>
 </template>
