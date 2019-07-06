@@ -22,7 +22,6 @@
           :options="allTypes">
       </mt-checklist>
     </mt-popup>
-    {{pathValue}}
     <router-view style="margin: 80px 0 55px 0;"></router-view>
     <mt-tabbar fixed v-model="navValue">
       <mt-tab-item id="main">
@@ -33,7 +32,7 @@
         <img slot="icon" src="../../assets/img/nav.png" alt="">
         课程
       </mt-tab-item>
-      <mt-tab-item id="article">
+      <mt-tab-item id="articles">
         <img slot="icon" src="../../assets/img/nav.png" alt="">
         文章
       </mt-tab-item>
@@ -69,9 +68,9 @@
       }
     },
     mounted() {
-      if (this.pathValue === 'article') {
+      if (this.pathValue === 'articles') {
         this.isArticle = true;
-        this.navValue = 'article';
+        this.navValue = 'articles';
       }
       if (this.pathValue === 'main') {
         this.isMain = true;
@@ -93,12 +92,12 @@
         this.$router.replace(`/home/${value}`);
         this.isMine = value === 'mine';
         this.isMain = value === 'main';
-        this.isArticle = value === 'article';
+        this.isArticle = value === 'articles';
       },
       pathValue: function (value) {
-        if (value === 'article') {
+        if (value === 'articles') {
           this.isArticle = true;
-          this.navValue = 'article'
+          this.navValue = 'articles'
         }
       }
     }

@@ -1,10 +1,10 @@
 <template>
-  <template>
+  <div>
     <div v-for="item in list" :key="item.id">
       <span>{{item.name}}</span> --- <span>{{item.fromUserName}}</span> --- <span>{{item.time}}</span>
       <el-divider></el-divider>
     </div>
-  </template>
+  </div>
 </template>
 
 <script>
