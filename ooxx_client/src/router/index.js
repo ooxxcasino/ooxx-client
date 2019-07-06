@@ -6,6 +6,7 @@ import Info from '../views/info/Info'
 import Home from '../views/home/Home'
 import Main from '../views/main/Main'
 import Lesson from '../views/lesson/Lesson'
+import Articles from '../views/articles/Articles'
 import Article from '../views/article/Article'
 import Mine from '../views/mine/Mine'
 import Video from '../views/video/Video'
@@ -49,8 +50,8 @@ export default new VueRouter({
           component: Lesson
         },
         {
-          path: '/home/article',
-          component: Article
+          path: '/home/articles',
+          component: Articles
         },
         {
           path: '/home/mine',
@@ -65,6 +66,10 @@ export default new VueRouter({
     {
       path: '/question',
       component: Question
+    },
+    {
+      path: '/article/:id',
+      component: Article
     }
   ]
 })

@@ -4,6 +4,7 @@
       <video :src="videoUrl" width="100%" height="260px" controls="controls">
         视频出现错误，请重试
       </video>
+
     </div>
     <div class="block" style="margin-top: 50px;">
       <el-rate
@@ -58,7 +59,8 @@
         colors: ['#99A9BF', '#F7BA2A', '#FF9900'],
         dialogVisible: false,
         toSomeone: '',
-        toVideo: ''
+        toVideo: '',
+        videoName: ''
       }
     },
     methods: {
@@ -116,55 +118,10 @@
       const url = `http://localhost:8080/video/${id}`;
       axios.get(url).then(
         response => {
-      // const response = {
-      //   "code": 1,
-      //   "data": {
-      //     "id": 1,
-      //     "name": "dasd",
-      //     "info": "seed",
-      //     "price": 1515,
-      //     "imageUrl": "seedzy",
-      //     "url": "dasd",
-      //     "times": 151,
-      //     "type": "sada",
-      //     "comments": [{
-      //       "id": "commentID1",
-      //       "user_name": "sada",
-      //       "content": "我是第一个，我是给视频的评论",
-      //       "time": "2019-07-03 23:45",
-      //       "toUser": "dewr",
-      //       "toComment": ""
-      //     },
-      //       {
-      //         "id": "commentID2",
-      //         "user_name": "sada",
-      //         "content": "我是第二个，我是给第一个评论的评论",
-      //         "time": "2019-07-03 23:45",
-      //         "toUser": "dewr",
-      //         "toComment": "commentID1"
-      //       },
-      //       {
-      //         "id": "commentID3",
-      //         "user_name": "sada",
-      //         "content": "我是第3个，我是给第一个评论的评论",
-      //         "time": "2019-07-03 23:45",
-      //         "toUser": "dewr",
-      //         "toComment": "commentID1"
-      //       },
-      //       {
-      //         "id": "commentID4",
-      //         "user_name": "sada",
-      //         "content": "我是第四个，我是给视频的评论",
-      //         "time": "2019-07-03 23:45",
-      //         "toUser": "dewr",
-      //         "toComment": ""
-      //       }
-      //     ]
-      //   }
-      // }
           const result = response.data;
           this.videoUrl = result.data.url;
           const allComments = result.data.comments;
+          this.videoName = result.data.name;
       // console.log(allComments);
           this.vComments = allComments.filter(comment => comment.toComment==='');
           // console.log(this.vComments);

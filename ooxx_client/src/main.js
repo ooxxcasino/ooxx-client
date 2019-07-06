@@ -23,7 +23,8 @@ import {
   Option,
   TimePicker,
   RadioGroup,
-  Dialog
+  Dialog,
+  Divider
 } from 'element-ui'
 import App from './App'
 import router from './router'
@@ -49,6 +50,7 @@ Vue.component(Option.name, Option  );
 Vue.component(TimePicker.name, TimePicker  );
 Vue.component(RadioGroup.name, RadioGroup  );
 Vue.component(Dialog.name, Dialog  );
+Vue.component(Divider.name, Divider  );
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

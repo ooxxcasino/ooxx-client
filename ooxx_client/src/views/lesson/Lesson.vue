@@ -10,7 +10,7 @@
         :to="'/video/' + item.id"
         @click.native="handleClick(item.id)"
     >
-      <img slot="icon" src="../../assets/img/nav.png" width="48" height="48" alt="">
+      <img slot="icon" :src="item.imageUrl"  width="48" height="48" alt="">
     </mt-cell-swipe>
   </div>
 </template>
