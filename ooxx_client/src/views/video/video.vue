@@ -19,8 +19,25 @@
     <el-collapse v-model="activeNames" v-for="item in vComments"  :key="item.id">
         <el-collapse-item :title="item.content" >
           <div v-for="comment in toComments" :key="comment.id" v-if="comment.toComment===item.id">{{comment.content}}</div>
+          <el-button @click="">回复</el-button>
+          <el-button type="text" @click="dialogVisible = true">回复</el-button>
+          <el-dialog
+              title="提示"
+              :visible.sync="dialogVisible"
+              width="30%"
+              :before-close="handleClose">
+            <el-input v-model="toSomeone" placeholder="请输入回复内容"></el-input>
+            <span slot="footer" class="dialog-footer">
+    <el-button @click="dialogVisible = false">取 消</el-button>
+    <el-button type="primary" @click="addComment(item.id, item.user_name)">确 定</el-button>
+  </span>
+          </el-dialog>
         </el-collapse-item>
     </el-collapse>
+    <div style="position: absolute; bottom: 0; width: 100%;">
+      <el-input style="width: 75%;" v-model="toVideo" placeholder="请输入回复内容"></el-input>
+      <el-button>回复</el-button>
+    </div>
   </div>
 </template>
 
@@ -37,15 +54,25 @@
         toComments: [],
         isChecked:false,
         starValue:null,
-        colors: ['#99A9BF', '#F7BA2A', '#FF9900']
+        colors: ['#99A9BF', '#F7BA2A', '#FF9900'],
+        dialogVisible: false,
+        toSomeone: '',
+        toVideo: ''
       }
     },
     methods: {
+      handleClose(done) {
+        this.$confirm('确认关闭？')
+          .then(_ => {
+            done();
+          })
+          .catch(_ => {});
+      },
       getStar() {
         const url = `http://localhost:8080/video/star`;
         const id = this.$route.params.id;
         const star = this.starValue;
-        axios.get(url, {id, star}).then(
+        axios.post(url, {id, star}).then(
           response => {
             const result = response.data;
             this.starValue = result.data.star;
@@ -54,6 +81,17 @@
         ).catch(error => {
           console.log('网络异常');
         })
+      },
+      addComment(id, toName) {
+        const url = 'http://loaclhost:8080/video/addComment';
+        const content = this.myComment.trim();
+        axios.post(url, {id, toName, content}).then(
+          response => {
+            this.dialogVisible = false;
+            const result = response.data;
+
+          }
+        )
       }
     },
     mounted() {

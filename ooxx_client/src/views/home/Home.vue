@@ -9,7 +9,7 @@
           placeholder="输入搜索"
       ></mt-search>
       <mt-button @click.native="typeClick" v-if="isMain" type="primary">分类</mt-button>
-      <mt-button @click.native="typeClick" v-if="isArticle" type="primary">提问</mt-button>
+      <mt-button @click.native="questionClick" v-if="isArticle" type="primary">提问</mt-button>
     </mt-cell>
     <mt-popup
         v-model="isShow"
@@ -22,6 +22,7 @@
           :options="allTypes">
       </mt-checklist>
     </mt-popup>
+    {{pathValue}}
     <router-view style="margin: 80px 0 55px 0;"></router-view>
     <mt-tabbar fixed v-model="navValue">
       <mt-tab-item id="main">
@@ -50,9 +51,9 @@
       return {
         searchValue: '',
         isMine: false,
-        navValue: 'main',
         isMain: false,
         isArticle:false,
+        navValue: 'main',
         types: [],
         isShow: false,
         allTypes: [{label: '前端', value: '无'}, {label: '前端', value: '小学'}, {label: '前端', value: '初中'},
@@ -62,6 +63,29 @@
     methods:{
       typeClick() {
         this.isShow = true
+      },
+      questionClick() {
+        this.$router.replace('/question')
+      }
+    },
+    mounted() {
+      if (this.pathValue === 'article') {
+        this.isArticle = true;
+        this.navValue = 'article';
+      }
+      if (this.pathValue === 'main') {
+        this.isMain = true;
+        this.navValue = 'main';
+      }
+      if (this.pathValue === 'mine') {
+        this.isMine = true;
+        this.navValue = 'mine';
+      }
+    },
+    computed: {
+      pathValue() {
+        const pathArr = this.$route.fullPath.split('/');
+        return pathArr[pathArr.length-1];
       }
     },
     watch: {
@@ -70,6 +94,12 @@
         this.isMine = value === 'mine';
         this.isMain = value === 'main';
         this.isArticle = value === 'article';
+      },
+      pathValue: function (value) {
+        if (value === 'article') {
+          this.isArticle = true;
+          this.navValue = 'article'
+        }
       }
     }
   }

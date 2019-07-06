@@ -9,6 +9,7 @@ import Lesson from '../views/lesson/Lesson'
 import Article from '../views/article/Article'
 import Mine from '../views/mine/Mine'
 import Video from '../views/video/Video'
+import Question from '../views/question/Question'
 
 Vue.use(VueRouter);
 
@@ -60,6 +61,10 @@ export default new VueRouter({
     {
       path: '/video/:id',
       component: Video
+    },
+    {
+      path: '/question',
+      component: Question
     }
   ]
 })
